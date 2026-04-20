@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAP for ABAP Professionals — Complete Series | Sowmya Pabba</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+/* ── TOKENS ──────────────────────────────────────── */
+:root {
+  --ink:      #111318; --ink-2: #2e3140; --ink-3: #5a5f72; --ink-4: #8a8fa3;
+  --rule:     #dde0ea; --surface: #f7f8fb; --white: #ffffff;
+  --blue:     #1545b8; --blue-mid: #2259e0; --blue-lt: #e8eefb; --blue-lt2: #f0f4fd;
+  --teal:     #0b6e6e; --teal-lt: #e6f4f4;
+  --amber:    #b45309; --amber-lt: #fef3e2;
+  --red:      #b91c1c; --red-lt: #fef2f2;
+  --green:    #166534; --green-lt: #f0fdf4;
+  --mono:     'JetBrains Mono', monospace;
+  --serif:    'Source Serif 4', Georgia, serif;
+  --display:  'Playfair Display', Georgia, serif;
+}
+
+/* ── WATERMARK ───────────────────────────────────── */
+body::before {
+  content: '© Sowmya Pabba';
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) rotate(-35deg);
+  font-size: clamp(2.8rem,7vw,5rem);
+  font-family: var(--display); font-weight: 900;
+  color: rgba(21,69,184,0.042);
+  white-space: nowrap; pointer-events: none;
+  z-index: 9999; letter-spacing: 0.04em; user-select: none;
+}
+
+/* ── BODY ────────────────────────────────────────── */
+body { font-family: var(--serif); font-size: 1rem; line-height: 1.82; color: var(--ink-2); background: var(--white); }
+
+/* ── HEADER ──────────────────────────────────────── */
+.doc-header { background: var(--ink); padding: 3.5rem 2rem 0; position: relative; overflow: hidden; }
+.doc-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--blue-mid),#4f8ef7,var(--teal)); }
+.header-inner { max-width: 860px; margin: 0 auto; padding-bottom: 3rem; }
+.series-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13); border-radius: 2px; padding: 0.3rem 0.85rem; margin-bottom: 1.6rem; font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+.doc-header h1 { font-family: var(--display); font-size: clamp(1.9rem,4.5vw,2.85rem); font-weight: 900; color: #fff; line-height: 1.14; max-width: 720px; }
+.doc-header h1 em { font-style: italic; color: #7aaeff; }
+.doc-subtitle { margin-top: 1rem; font-size: 1.02rem; font-weight: 300; font-style: italic; color: rgba(255,255,255,0.5); max-width: 580px; line-height: 1.6; font-family: var(--serif); }
+.doc-meta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.45rem 2rem; font-family: var(--mono); font-size: 0.7rem; color: rgba(255,255,255,0.38); letter-spacing: 0.04em; }
+.doc-meta strong { color: rgba(255,255,255,0.72); font-weight: 500; }
+
+/* ── TAB NAV ─────────────────────────────────────── */
+.tab-nav { background: #1a1d26; border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; overflow-x: auto; }
+.tab-nav-inner { max-width: 860px; margin: 0 auto; display: flex; padding: 0 2rem; min-width: max-content; }
+.tab-btn {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.38); padding: 1rem 1.2rem;
+  border: none; background: none; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: rgba(255,255,255,0.65); }
+.tab-btn.active { color: #7aaeff; border-bottom-color: #7aaeff; }
+
+/* ── TAB PANELS ──────────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── TOC ─────────────────────────────────────────── */
+.toc-wrap { background: var(--blue-lt2); border-bottom: 1px solid var(--rule); }
+.toc-inner { max-width: 860px; margin: 0 auto; padding: 2rem 2rem; }
+.toc-label { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 1rem; }
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 0.4rem 2.5rem; }
+.toc-grid a { display: flex; align-items: baseline; gap: 0.6rem; text-decoration: none; font-family: var(--serif); font-size: 0.88rem; color: var(--ink-2); line-height: 1.5; transition: color 0.15s; }
+.toc-grid a:hover { color: var(--blue); }
+.toc-n { font-family: var(--mono); font-size: 0.63rem; color: var(--blue); min-width: 1.6rem; flex-shrink: 0; }
+
+/* ── CONTENT ─────────────────────────────────────── */
+.content { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 3.8rem 0; border-bottom: 1px solid var(--rule); }
+.section:last-of-type { border-bottom: none; }
+.sec-eyebrow { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem; }
+.sec-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); max-width: 100px; }
+h2.sec-title { font-family: var(--display); font-size: clamp(1.45rem,3vw,1.9rem); font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 1.4rem; }
+h3 { font-family: var(--display); font-size: 1.13rem; font-weight: 700; font-style: italic; color: var(--ink); margin: 2.2rem 0 0.65rem; }
+p { margin-bottom: 1.1rem; color: var(--ink-2); font-size: 0.97rem; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--ink); font-weight: 600; }
+.ic { font-family: var(--mono); font-size: 0.81em; background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 0.07em 0.36em; color: var(--ink); white-space: nowrap; }
+
+/* ── CODE BLOCKS ─────────────────────────────────── */
+.code-block { margin: 1.6rem 0; border-radius: 6px; overflow: hidden; border: 1px solid #ced3e0; box-shadow: 0 2px 8px rgba(0,0,0,0.055); }
+.cb-header { background: #1e2230; padding: 0.52rem 1.1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.cb-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.42); flex: 1; min-width: 0; }
+.cb-badge { font-family: var(--mono); font-size: 0.61rem; color: #7aaeff; background: rgba(122,174,255,0.12); border-radius: 3px; padding: 0.14rem 0.48rem; white-space: nowrap; flex-shrink: 0; }
+pre { background: #f5f6f9; padding: 1.25rem 1.4rem; overflow-x: auto; margin: 0; font-family: var(--mono); font-size: 0.8rem; line-height: 1.78; color: var(--ink); tab-size: 2; white-space: pre; word-break: normal; }
+.kw { color: #1545b8; font-weight: 500; } .ann { color: #6b21a8; } .str { color: #15803d; } .cmt { color: #94a3b8; font-style: italic; } .fld { color: #b45309; } .typ { color: #0f766e; }
+
+/* ── CALLOUTS ────────────────────────────────────── */
+.callout { border-radius: 6px; padding: 1.1rem 1.3rem; margin: 1.6rem 0; font-size: 0.93rem; line-height: 1.72; }
+.callout-title { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.55rem; display: flex; align-items: center; gap: 0.5rem; }
+.callout p { margin-bottom: 0.55rem; font-size: 0.93rem; color: var(--ink-2); }
+.callout p:last-child { margin-bottom: 0; }
+.callout ul { padding-left: 1.2rem; margin-top: 0.3rem; }
+.callout ul li { margin-bottom: 0.3rem; font-size: 0.93rem; color: var(--ink-2); }
+.c-note   { background: var(--blue-lt2);  border-left: 3px solid var(--blue-mid); }
+.c-note   .callout-title { color: var(--blue); }
+.c-choice { background: var(--teal-lt);   border-left: 3px solid var(--teal); }
+.c-choice .callout-title { color: var(--teal); }
+.c-watch  { background: var(--amber-lt);  border-left: 3px solid var(--amber); }
+.c-watch  .callout-title { color: var(--amber); }
+.c-avoid  { background: var(--red-lt);    border-left: 3px solid var(--red); }
+.c-avoid  .callout-title { color: var(--red); }
+.c-good   { background: var(--green-lt);  border-left: 3px solid var(--green); }
+.c-good   .callout-title { color: var(--green); }
+
+/* ── TABLES ──────────────────────────────────────── */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; margin: 1.5rem 0; }
+.comp-table th { background: var(--ink); color: #fff; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.65rem 1rem; text-align: left; font-weight: 500; }
+.comp-table td { padding: 0.68rem 1rem; border-bottom: 1px solid var(--rule); vertical-align: top; color: var(--ink-2); line-height: 1.55; }
+.comp-table tr:nth-child(even) td { background: var(--surface); }
+.comp-table td:first-child { font-family: var(--mono); font-size: 0.77rem; font-weight: 500; color: var(--ink); }
+.yes { color: var(--green); font-weight: 600; font-family: var(--mono); font-size: 0.76rem; }
+.no  { color: var(--red);   font-weight: 600; font-family: var(--mono); font-size: 0.76rem; }
+.par { color: var(--amber); font-weight: 600; font-family: var(--mono); font-size: 0.76rem; }
+.fix { color: var(--amber); font-weight: 600; font-family: var(--mono); font-size: 0.76rem; }
+.ok  { color: var(--green); font-weight: 600; font-family: var(--mono); font-size: 0.76rem; }
+
+/* ── LAYER STACK ─────────────────────────────────── */
+.layer-stack { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin: 1.5rem 0; }
+.layer-row { display: flex; align-items: stretch; border-bottom: 1px solid var(--rule); }
+.layer-row:last-child { border-bottom: none; }
+.layer-indicator { width: 5px; flex-shrink: 0; }
+.layer-content { flex: 1; padding: 0.9rem 1.2rem; min-width: 0; }
+.layer-name { font-family: var(--mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.07em; color: var(--ink); margin-bottom: 0.2rem; }
+.layer-rule { font-size: 0.84rem; color: var(--ink-3); line-height: 1.55; }
+.layer-tag { align-self: center; flex-shrink: 0; margin-right: 1.1rem; font-family: var(--mono); font-size: 0.63rem; padding: 0.22rem 0.55rem; border-radius: 3px; white-space: nowrap; }
+.li-blue{background:var(--blue-mid);} .li-teal{background:var(--teal);} .li-amber{background:var(--amber);} .li-green{background:var(--green);} .li-purp{background:#7c3aed;}
+.lt-blue{background:var(--blue-lt);color:var(--blue);} .lt-teal{background:var(--teal-lt);color:var(--teal);} .lt-amber{background:var(--amber-lt);color:var(--amber);} .lt-green{background:var(--green-lt);color:var(--green);} .lt-purp{background:#ede9fe;color:#7c3aed;}
+
+/* ── MAPPING ROWS ────────────────────────────────── */
+.map-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; margin: 1rem 0; align-items: center; }
+.map-left,.map-right { border: 1px solid var(--rule); border-radius: 6px; padding: 0.8rem 1rem; background: var(--white); min-width: 0; }
+.map-left  { border-left: 3px solid var(--ink-3); }
+.map-right { border-left: 3px solid var(--blue-mid); }
+.map-label { font-family: var(--mono); font-size: 0.61rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.28rem; }
+.map-left  .map-label { color: var(--ink-3); }
+.map-right .map-label { color: var(--blue); }
+.map-name  { font-family: var(--serif); font-size: 0.92rem; font-weight: 600; color: var(--ink); word-break: break-word; }
+.map-desc  { font-size: 0.79rem; color: var(--ink-3); margin-top: 0.2rem; font-style: italic; line-height: 1.45; }
+.map-arrow { font-size: 1.4rem; color: var(--blue-mid); text-align: center; flex-shrink: 0; line-height: 1; }
+
+/* ── DO / AVOID ──────────────────────────────────── */
+.do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.4rem 0; }
+.do-box,.dont-box { border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); }
+.do-header   { background: var(--green-lt); padding: 0.55rem 1rem; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); font-weight: 500; }
+.dont-header { background: var(--red-lt);   padding: 0.55rem 1rem; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red);   font-weight: 500; }
+.do-body,.dont-body { padding: 0.85rem 1rem; font-size: 0.84rem; color: var(--ink-2); line-height: 1.65; }
+.do-body ul,.dont-body ul { padding-left: 1.2rem; }
+.do-body li,.dont-body li { margin-bottom: 0.35rem; }
+
+/* ── SAVE SEQUENCE FLOW ──────────────────────────── */
+.seq-flow { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+.seq-step { display: flex; align-items: flex-start; gap: 1rem; padding: 0.85rem 1rem; background: var(--white); border: 1px solid var(--rule); border-radius: 6px; margin-bottom: 0.4rem; }
+.seq-num { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--white); background: var(--blue-mid); border-radius: 50%; width: 1.4rem; height: 1.4rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.15rem; }
+.seq-content .seq-title { font-family: var(--serif); font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+.seq-content .seq-desc  { font-size: 0.82rem; color: var(--ink-3); line-height: 1.5; }
+
+/* ── NEXT SERIES BANNER ──────────────────────────── */
+.next-series {
+  background: linear-gradient(135deg, #1a1d26 0%, #1e2d4a 100%);
+  border-radius: 8px; padding: 2.2rem 2.4rem; margin: 3rem 0 0;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(122,174,255,0.2);
+}
+.next-series::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--blue-mid),#4f8ef7,var(--teal)); }
+.ns-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(122,174,255,0.12); border: 1px solid rgba(122,174,255,0.25); border-radius: 2px; padding: 0.25rem 0.7rem; margin-bottom: 1rem; font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.12em; text-transform: uppercase; color: #7aaeff; }
+.next-series h3 { font-family: var(--display); font-size: 1.3rem; font-weight: 700; color: #fff; margin: 0 0 0.7rem; font-style: normal; }
+.next-series p { color: rgba(255,255,255,0.62); font-size: 0.92rem; line-height: 1.65; margin-bottom: 0.6rem; }
+.next-series p:last-child { margin-bottom: 0; }
+.ns-topics { display: flex; flex-direction: column; gap: 0.4rem; margin: 1rem 0; }
+.ns-topic { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.87rem; color: rgba(255,255,255,0.58); line-height: 1.5; }
+.ns-dot { width: 5px; height: 5px; border-radius: 50%; background: #7aaeff; flex-shrink: 0; margin-top: 0.5rem; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+.doc-footer { background: var(--surface); border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-size: 0.82rem; color: var(--ink-3); line-height: 1.8; }
+.doc-footer strong { color: var(--ink); }
+.wm-footer { margin-top: 0.7rem; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; color: var(--ink-4); }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 660px) {
+  .do-dont { grid-template-columns: 1fr; }
+  .map-grid { grid-template-columns: 1fr; }
+  .map-arrow { transform: rotate(90deg); text-align: center; }
+  .toc-grid { grid-template-columns: 1fr; }
+  pre { font-size: 0.73rem; }
+  .layer-tag { display: none; }
+  .tab-btn { font-size: 0.58rem; padding: 0.85rem 0.7rem; letter-spacing: 0.06em; }
+  .tab-nav-inner { padding: 0 0.5rem; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="doc-header">
+  <div class="header-inner">
+    <div class="series-badge">RAP for ABAP Professionals &nbsp;·&nbsp; Complete Series</div>
+    <h1>RESTful ABAP Programming Model<br>
+      <em>A Training Guide</em>
+    </h1>
+    <p class="doc-subtitle">
+      Architecture, behaviour, value help, naming conventions, and design
+      decisions — all three parts in one place.
+    </p>
+    <div class="doc-meta">
+      <span><strong>Sowmya Pabba</strong></span>
+      <span>S/4HANA &nbsp;·&nbsp; CDS &nbsp;·&nbsp; RAP &nbsp;·&nbsp; BTP &nbsp;·&nbsp; Clean Core</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ TAB NAV ═══════════ -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="showTab('p1',this)">Part 1 · Architecture &amp; Foundations</button>
+    <button class="tab-btn" onclick="showTab('p2',this)">Part 2 · Behaviour &amp; Advanced Concepts</button>
+    <button class="tab-btn" onclick="showTab('p3',this)">Part 3 · Value Help, Naming &amp; Pitfalls</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     PART 1
+══════════════════════════════════════════════ -->
+<div class="tab-panel active" id="p1">
+
+  <div class="toc-wrap">
+    <div class="toc-inner">
+      <div class="toc-label">Contents — Part 1</div>
+      <div class="toc-grid">
+        <a href="#s1"><span class="toc-n">01</span>Why RAP Exists</a>
+        <a href="#s2"><span class="toc-n">02</span>When to Use RAP</a>
+        <a href="#s3"><span class="toc-n">03</span>RAP vs Classic ABAP OData</a>
+        <a href="#s4"><span class="toc-n">04</span>RAP Architecture Overview</a>
+        <a href="#s5"><span class="toc-n">05</span>From CDS to RAP — Mapping What You Already Know</a>
+        <a href="#s6"><span class="toc-n">06</span>End-to-End Runtime Flow</a>
+        <a href="#s7"><span class="toc-n">07</span>Data Model — Table &amp; Interface View</a>
+        <a href="#s8"><span class="toc-n">08</span>Consumption View &amp; UI Strategy</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <section class="section" id="s1">
+    <div class="sec-eyebrow">Section 01</div>
+    <h2 class="sec-title">Why RAP Exists</h2>
+    <p>RAP is not just a new way to write OData services — it is a <strong>complete programming model</strong> that brings persistence, locking, authorisation, draft, and the save sequence under one framework. Each of these was previously left to the individual developer to implement consistently across projects. RAP makes them declarative.</p>
+    <p>You write logic only where the business actually needs something specific — validations, field derivations, and custom actions. Everything else is handled by the framework based on what you declare.</p>
+    <p>Coming from years of classic ABAP and CDS development, the first question RAP raises is not whether it works. The question is how the model maps to what you already know, and where the thinking has to change. That mapping is what this series is built around.</p>
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Clean Core</div>
+      <p>RAP was built with SAP's Clean Core strategy as a core requirement. Custom development must not touch SAP standard objects and must stay stable across upgrades. RAP supports this by design — all custom objects live in the customer namespace, the framework owns the standard integration points, and service bindings are derived from CDS definitions and need to be republished only when you edit your own CDS views.</p>
+      <p>For any programme planning a move to SAP BTP or S/4HANA Cloud, new transactional development built today using classic SEGW or BAPI patterns will need to be rebuilt before that move. Starting with RAP now avoids that cost later.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s2">
+    <div class="sec-eyebrow">Section 02</div>
+    <h2 class="sec-title">When to Use RAP</h2>
+    <p>RAP is the right choice for all new transactional application development on S/4HANA and SAP BTP ABAP Environment. The decision of which type of RAP to use depends on the constraints in your project.</p>
+    <table class="comp-table">
+      <thead><tr><th>Scenario</th><th>RAP Fit</th><th>What to Use</th></tr></thead>
+      <tbody>
+        <tr><td>New master data maintenance app</td><td class="yes">Best fit</td><td>RAP Managed — framework handles all database saves</td></tr>
+        <tr><td>New transactional app with complex rules</td><td class="yes">Best fit</td><td>RAP Managed with validations, determinations, and actions</td></tr>
+        <tr><td>Extending an SAP standard Fiori app</td><td class="yes">Supported</td><td>RAP extension via BDEF extension or projection on SAP-released interface views</td></tr>
+        <tr><td>Wrapping a legacy BAPI for a new UI</td><td class="par">Conditional</td><td>RAP Unmanaged — you control the save logic</td></tr>
+        <tr><td>Read-only reporting or analytical queries</td><td class="no">Not needed</td><td>CDS views with OData V4 query exposure — no BDEF needed</td></tr>
+        <tr><td>ABAP program consuming a RAP object</td><td class="yes">Supported</td><td>EML — in-process ABAP way to call RAP objects from other programs</td></tr>
+      </tbody>
+    </table>
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — Managed vs Unmanaged</div>
+      <p>Managed is always the starting point. Unmanaged is the right choice only when the save process cannot be handed to the framework — usually because an existing BAPI has years of business logic that cannot be replicated in the project timeline. Choosing unmanaged for convenience means losing framework-provided ETag handling and the structured save sequence. Make this decision early and document why. It is difficult to change mid-project.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s3">
+    <div class="sec-eyebrow">Section 03</div>
+    <h2 class="sec-title">RAP vs Classic ABAP OData</h2>
+    <p>Developers who have built services through SEGW will immediately see what RAP removes. This is not just a syntax change — the way you think about building a service changes fundamentally.</p>
+    <table class="comp-table">
+      <thead><tr><th>Capability</th><th>Classic SEGW + BAPI</th><th>RAP</th></tr></thead>
+      <tbody>
+        <tr><td>Service definition</td><td>Manual in SEGW — changes need regeneration and republishing</td><td>Derived from CDS projection — metadata updates after republishing the service binding</td></tr>
+        <tr><td>CRUD implementation</td><td>Manual code in CREATE_ENTITY, UPDATE_ENTITY, GET_ENTITY methods</td><td>Framework handles saves in managed scenario — developer writes only validation and derivation logic</td></tr>
+        <tr><td>Locking</td><td>Manual enqueue calls — applied differently across developers</td><td>Declared with <span class="ic">lock master</span> in BDEF — framework handles automatically</td></tr>
+        <tr><td>Draft handling</td><td>Custom build per application — no standard pattern</td><td>Framework-provided when <span class="ic">with draft</span> is declared in BDEF</td></tr>
+        <tr><td>Authorisation</td><td>Manual checks inside service methods — easy to miss</td><td>Two layers: BDEF handles operation-level; DCL objects control data-level access</td></tr>
+        <tr><td>OData version</td><td>V2 only via SEGW</td><td>OData V4 by default; V2 compatibility binding available</td></tr>
+        <tr><td>ETag / concurrency</td><td>Manual build if required — often skipped</td><td>Declared with <span class="ic">etag master</span> — framework checks on every update</td></tr>
+        <tr><td>Clean Core</td><td class="no">Not by design</td><td class="yes">Built for Clean Core</td></tr>
+      </tbody>
+    </table>
+    <p>What stands out most about this comparison is not any single feature — it is that RAP removes a whole category of decisions that classic development left to each developer. Locking, ETags, audit fields — in SEGW you either remembered them or you did not. In RAP they are declared, or the framework does not allow you to proceed.</p>
+    <div class="callout c-watch">
+      <div class="callout-title">⚠ Watch Out</div>
+      <p>The most common mistake when moving from SEGW to RAP is writing direct database calls inside the implementation class for every operation. In the managed scenario, the framework owns the save process. Writing MODIFY statements directly against the table bypasses the framework buffer and causes inconsistent behaviour that is hard to trace.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s4">
+    <div class="sec-eyebrow">Section 04</div>
+    <h2 class="sec-title">RAP Architecture Overview</h2>
+    <p>A RAP application has five layers, each with one clear responsibility.</p>
+    <div class="layer-stack">
+      <div class="layer-row"><div class="layer-indicator li-blue"></div><div class="layer-content"><div class="layer-name">Database Table · DDIC Transparent Table</div><div class="layer-rule">Stores the data. No business logic. In the managed scenario, the framework writes here via the field mapping declared in the BDEF.</div></div><div class="layer-tag lt-blue">PERSISTENCE</div></div>
+      <div class="layer-row"><div class="layer-indicator li-teal"></div><div class="layer-content"><div class="layer-name">Interface CDS View · Root View Entity (ZI_)</div><div class="layer-rule">Defines the business object. Semantic annotations, audit field markers, access control binding, associations. No UI annotations. Stable and reusable across multiple applications.</div></div><div class="layer-tag lt-teal">INTERFACE</div></div>
+      <div class="layer-row"><div class="layer-indicator li-amber"></div><div class="layer-content"><div class="layer-name">Consumption CDS View · Projection View (ZC_)</div><div class="layer-rule">Application-specific view. All UI annotations, facet definitions, value help bindings. One interface view can have multiple consumption views for different applications or roles.</div></div><div class="layer-tag lt-amber">CONSUMPTION</div></div>
+      <div class="layer-row"><div class="layer-indicator li-green"></div><div class="layer-content"><div class="layer-name">Behaviour Definition · BDEF</div><div class="layer-rule">Declares what the business object can do. Interface BDEF carries the full definition. Consumption BDEF is a short delegation controlling which capabilities reach the service layer.</div></div><div class="layer-tag lt-green">BEHAVIOUR</div></div>
+      <div class="layer-row"><div class="layer-indicator li-purp"></div><div class="layer-content"><div class="layer-name">Service Definition + Service Binding · OData Exposure</div><div class="layer-rule">Makes the consumption view available as OData V4. Service definition names the entities. Service binding activates the endpoint. Value help CDS views must also be listed here.</div></div><div class="layer-tag lt-purp">SERVICE</div></div>
+    </div>
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Why the Interface / Consumption Split Matters</div>
+      <p>Keeping interface and consumption views separate means multiple applications can share the same business object while each presenting it differently. A layout change in one application cannot affect another because each owns its own consumption view.</p>
+      <p>The interface view, once stable, becomes a shared contract. Any change to it needs to be checked against all applications that project from it. This discipline is what keeps a multi-application project manageable over time — and it is the first thing that breaks down when teams are under pressure.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s5">
+    <div class="sec-eyebrow">Section 05</div>
+    <h2 class="sec-title">From CDS to RAP — Mapping What You Already Know</h2>
+    <p>If you have worked with CDS views, OData services, and BAPIs, much of RAP will feel familiar. The tools are the same — ADT, CDS DDL, ABAP classes. What changes is how you think about a business object: in RAP it has a declared contract for what it can do, not just a select statement for what it reads.</p>
+    <div class="map-grid"><div class="map-left"><div class="map-label">Classic ABAP</div><div class="map-name">CDS View — read-only OData exposure</div><div class="map-desc">Data for Fiori List Reports via SEGW import or direct service exposure</div></div><div class="map-arrow">→</div><div class="map-right"><div class="map-label">RAP</div><div class="map-name">Interface View (ZI_) + Consumption View (ZC_)</div><div class="map-desc">Split into business definition layer and application presentation layer</div></div></div>
+    <div class="map-grid"><div class="map-left"><div class="map-label">Classic ABAP</div><div class="map-name">Metadata Extension (MDE)</div><div class="map-desc">UI annotations layered on a CDS view</div></div><div class="map-arrow">→</div><div class="map-right"><div class="map-label">RAP</div><div class="map-name">UI annotations in Consumption View or MDE on Consumption View</div><div class="map-desc">MDE preferred when annotations are maintained separately from view structure</div></div></div>
+    <div class="map-grid"><div class="map-left"><div class="map-label">Classic ABAP</div><div class="map-name">BAPI / Function Module</div><div class="map-desc">In-system entry point for create, change, delete</div></div><div class="map-arrow">→</div><div class="map-right"><div class="map-label">RAP</div><div class="map-name">Behaviour Definition + Implementation Class</div><div class="map-desc">Declared contract in BDEF; logic in ABAP class. EML is the in-process ABAP way to call RAP objects from other programs</div></div></div>
+    <div class="map-grid"><div class="map-left"><div class="map-label">Classic ABAP</div><div class="map-name">SAP Gateway Service Builder (SEGW)</div><div class="map-desc">OData V2 service, entity mapping, data provider class</div></div><div class="map-arrow">→</div><div class="map-right"><div class="map-label">RAP</div><div class="map-name">Service Definition + Service Binding</div><div class="map-desc">Derived from CDS projection; published as OData V4 via service binding activation</div></div></div>
+    <div class="map-grid"><div class="map-left"><div class="map-label">Classic ABAP</div><div class="map-name">SELECT / MODIFY / INSERT on DB table</div><div class="map-desc">Direct database access from application code</div></div><div class="map-arrow">→</div><div class="map-right"><div class="map-label">RAP</div><div class="map-name">EML — Entity Manipulation Language</div><div class="map-desc">READ ENTITIES, MODIFY ENTITIES — buffer-based operations reflecting current transaction state</div></div></div>
+    <h3>The Buffer-First Mindset</h3>
+    <p>The most notable shift coming from classic ABAP is not the annotations or the BDEF syntax — it is changing the instinct of reaching for a SELECT when reading the entity you are currently modifying.</p>
+    <p>In RAP, every operation inside an implementation method writes to a <strong>transactional buffer</strong>. The framework saves this buffer to the database only during the save sequence. Within a transaction, changes in the buffer are not yet in the database.</p>
+    <p>Once you understand that the buffer exists to support draft and the structured save sequence, the pattern makes complete sense.</p>
+    <p>This matters most for validations. A SELECT on the same entity being modified will miss the buffer changes and return old data. However, for reading <strong>unrelated tables</strong> — configuration tables, other master data — a direct SELECT is perfectly valid.</p>
+    <div class="callout c-watch">
+      <div class="callout-title">⚠ Watch Out — Reading the Current Entity Inside Methods</div>
+      <p>When you need to read the entity you are currently working on inside a validation or determination, always use <span class="ic">READ ENTITIES IN LOCAL MODE</span>. This reads from the buffer and reflects the current transaction state. <span class="ic">IN LOCAL MODE</span> skips DCL access control checks — this is correct when operating inside the business object's own implementation. For unrelated tables, a direct SELECT is fine.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s6">
+    <div class="sec-eyebrow">Section 06</div>
+    <h2 class="sec-title">End-to-End Runtime Flow</h2>
+    <p>Not all layers are active on every request. What changes between a read, a create, and an update is which layers get involved and in what order. The key difference is between the <strong>interaction phase</strong> — where user changes collect in the buffer — and the <strong>save sequence</strong> — where the buffer is checked and written to the database.</p>
+    <div class="layer-stack">
+      <div class="layer-row"><div class="layer-indicator li-purp"></div><div class="layer-content"><div class="layer-name">Fiori Elements UI ↔ Service Binding (OData V4)</div><div class="layer-rule">UI layout is driven entirely by OData metadata from CDS annotations. Service binding routes requests to the business object and publishes metadata.</div></div><div class="layer-tag lt-purp">CONSUMER</div></div>
+      <div class="layer-row"><div class="layer-indicator li-blue"></div><div class="layer-content"><div class="layer-name">Behaviour Definition — orchestrates</div><div class="layer-rule">Evaluates permitted operations. Manages locking and ETag. Calls the implementation class for validations and determinations. Coordinates the save sequence.</div></div><div class="layer-tag lt-blue">CONTRACT</div></div>
+      <div class="layer-row"><div class="layer-indicator li-green"></div><div class="layer-content"><div class="layer-name">Behaviour Implementation Class — called by BDEF</div><div class="layer-rule">Runs validations, determinations, and actions. All changes go to the transactional buffer — not the database. The BDEF calls this; it does not call the BDEF.</div></div><div class="layer-tag lt-green">LOGIC</div></div>
+      <div class="layer-row"><div class="layer-indicator li-teal"></div><div class="layer-content"><div class="layer-name">CDS Views — Interface &amp; Consumption</div><div class="layer-rule">Queried directly for READ operations via ABAP SQL runtime. Provides field semantics and value help definitions that become OData metadata.</div></div><div class="layer-tag lt-teal">DEFINITION</div></div>
+      <div class="layer-row"><div class="layer-indicator li-amber"></div><div class="layer-content"><div class="layer-name">Database Table</div><div class="layer-rule">Framework flushes the buffer here during the save sequence. Application code does not access this directly in managed RAP.</div></div><div class="layer-tag lt-amber">PERSISTENCE</div></div>
+    </div>
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Why Draft Handling Matters</div>
+      <p>The separation of interaction phase from save sequence makes draft possible. When draft is enabled, user changes are saved to a separate draft table after each action — without touching the active data table. A user filling a long form can close the browser, return the next day, and continue where they left off. The final validation and save to the active table happen only when the user confirms. Without draft, unsaved data is lost on session timeout — a real business problem for complex data entry forms.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s7">
+    <div class="sec-eyebrow">Section 07</div>
+    <h2 class="sec-title">Data Model — Table &amp; Interface View</h2>
+    <p>We use a Plant Master Data application as the example throughout this series. It is deliberately chosen — complete enough to demonstrate every layer of the RAP model without requiring business domain knowledge to follow the reasoning. All artefact names use the <span class="ic">TST</span> namespace prefix — for example <span class="ic">ZI_TST_PLANT_MD</span> — indicating these are sample training objects, not production-ready names. Part 3 covers SAP standard naming conventions and what the corrected names would look like in a real project.</p>
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZTST_PLANT_MD — Table definition</span><span class="cb-badge">DDIC Transparent Table</span></div>
+<pre><span class="ann">@AbapCatalog.tableCategory</span>  : <span class="str">#TRANSPARENT</span>
+<span class="ann">@AbapCatalog.deliveryClass</span>  : <span class="str">#C</span>   <span class="cmt">// Customer data — SAP upgrades do not touch this</span>
+<span class="ann">@AbapCatalog.dataMaintenance</span>: <span class="str">#ALLOWED</span>
+
+<span class="kw">define table</span> ztst_plant_md {
+  <span class="kw">key</span> client      : <span class="typ">abap.clnt not null</span>;
+  <span class="kw">key</span> plant       : <span class="typ">abap.char(4) not null</span>;
+      plant_name  : <span class="typ">abap.char(30)</span>;
+      country     : <span class="typ">land1</span>;
+      region      : <span class="typ">abap.char(3)</span>;
+      plant_type  : <span class="typ">ztst_plant_type</span>;  <span class="cmt">// Custom domain</span>
+      currency    : <span class="typ">waers</span>;
+      valid_from  : <span class="typ">abap.dats</span>;
+      valid_to    : <span class="typ">abap.dats</span>;
+      created_by  : <span class="typ">abap.char(12)</span>;
+      created_at  : <span class="typ">abap.utclong</span>;    <span class="cmt">// Required for ETag</span>
+      changed_by  : <span class="typ">abap.char(12)</span>;
+      changed_at  : <span class="typ">abap.utclong</span>;    <span class="cmt">// Used as etag master</span>
+}</pre></div>
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — abap.utclong for Timestamps</div>
+      <p>The <span class="ic">created_at</span> and <span class="ic">changed_at</span> fields must be typed as <span class="ic">abap.utclong</span>. The framework needs a UTC timestamp for the <span class="ic">etag master</span> field precise enough to distinguish changes made by multiple users at the same time from different time zones. A date field is not precise enough. This is a small decision that is easy to get wrong the first time — and worth getting right from the start because changing a field type after data exists in the table is a migration, not a simple fix.</p>
+    </div>
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZI_TST_PLANT_MD — Interface View</span><span class="cb-badge">Root View Entity</span></div>
+<pre><span class="ann">@AccessControl.authorizationCheck</span>: <span class="str">#CHECK</span>
+<span class="cmt">// Production: needs a DCL access control object.
+// Development only: use #NOT_REQUIRED temporarily.
+// Never use #NOT_REQUIRED in production.</span>
+
+<span class="ann">@Metadata.ignorePropagatedAnnotations</span>: <span class="kw">true</span>
+<span class="cmt">// Stops DDIC-level annotations (search help assignments, data
+// element labels) from flowing into this view automatically.</span>
+
+<span class="kw">define root view entity</span> ZI_TST_PLANT_MD
+  <span class="kw">as select from</span> ztst_plant_md
+{
+  <span class="kw">key</span> plant        <span class="kw">as</span> Plant,
+      plant_name   <span class="kw">as</span> PlantName,
+      country      <span class="kw">as</span> Country,
+      region       <span class="kw">as</span> Region,
+      plant_type   <span class="kw">as</span> PlantType,
+      currency     <span class="kw">as</span> Currency,
+      valid_from   <span class="kw">as</span> ValidFrom,
+      valid_to     <span class="kw">as</span> ValidTo,
+
+      <span class="cmt">// @Semantics marks these as system-managed.
+      // Combined with field(readonly) in BDEF, framework
+      // fills them automatically on every create and update.</span>
+      <span class="ann">@Semantics.user.createdBy</span>:               <span class="kw">true</span>
+      created_by   <span class="kw">as</span> CreatedBy,
+      <span class="ann">@Semantics.systemDateTime.createdAt</span>:     <span class="kw">true</span>
+      created_at   <span class="kw">as</span> CreatedAt,
+      <span class="ann">@Semantics.user.lastChangedBy</span>:           <span class="kw">true</span>
+      changed_by   <span class="kw">as</span> ChangedBy,
+      <span class="ann">@Semantics.systemDateTime.lastChangedAt</span>: <span class="kw">true</span>
+      changed_at   <span class="kw">as</span> ChangedAt
+}</pre></div>
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Two Separate Authorisation Layers</div>
+      <p>The <span class="ic">authorization master</span> in the BDEF and the DCL access control object are two separate things. BDEF authorisation controls what <em>operations</em> a user can do — create, update, delete. DCL controls what <em>data</em> a user can see — which records come back in a query. Both are needed in production. Without DCL, any logged-in user can read all records through the OData service regardless of their authorisation profile.</p>
+    </div>
+  </section>
+
+  <section class="section" id="s8">
+    <div class="sec-eyebrow">Section 08</div>
+    <h2 class="sec-title">Consumption View &amp; UI Strategy</h2>
+    <p>The consumption view is the application-specific view of the business object. The keyword <span class="ic">as projection on</span> means this view does not read the database on its own — it presents an existing business object for a specific application context.</p>
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZC_TST_PLANT_MD — Consumption View</span><span class="cb-badge">Projection View · transactional_query</span></div>
+<pre><span class="ann">@Metadata.allowExtensions</span>: <span class="kw">true</span>
+
+<span class="ann">@UI.headerInfo</span>: {
+  typeName: <span class="str">'Plant'</span>, typeNamePlural: <span class="str">'Plants'</span>,
+  title:       { type: <span class="str">#STANDARD</span>, value: <span class="str">'Plant'</span> },
+  description: { type: <span class="str">#STANDARD</span>, value: <span class="str">'PlantName'</span> }
+}
+
+<span class="ann">@UI.facet</span>: [
+  { id: <span class="str">'GeneralInfo'</span>, type: <span class="str">#FIELDGROUP_REFERENCE</span>,
+    targetQualifier: <span class="str">'GeneralInfo'</span>, label: <span class="str">'General Information'</span>, position: 10 },
+  { id: <span class="str">'AddressInfo'</span>,  type: <span class="str">#FIELDGROUP_REFERENCE</span>,
+    targetQualifier: <span class="str">'AddressInfo'</span>,  label: <span class="str">'Address'</span>,             position: 20 },
+  { id: <span class="str">'ValidityInfo'</span>, type: <span class="str">#FIELDGROUP_REFERENCE</span>,
+    targetQualifier: <span class="str">'ValidityInfo'</span>, label: <span class="str">'Validity'</span>,            position: 30 }
+]
+
+<span class="kw">define root view entity</span> ZC_TST_PLANT_MD
+  <span class="kw">provider contract</span> transactional_query
+  <span class="kw">as projection on</span> ZI_TST_PLANT_MD</pre></div>
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — provider contract transactional_query</div>
+      <p><span class="ic">provider contract</span> applies to projection views only. <span class="ic">transactional_query</span> enables both read and write access through the OData service. The interface view uses <span class="ic">define root view entity</span> without a provider contract — it is the main business object definition, not a projection.</p>
+    </div>
+    <h3>What Goes Where</h3>
+    <div class="do-dont">
+      <div class="do-box"><div class="do-header">✓ Interface View</div><div class="do-body"><ul><li>Semantic annotations (<span class="ic">@Semantics.*</span>)</li><li>Access control (<span class="ic">@AccessControl</span>)</li><li>CamelCase field aliases</li><li>Associations to related entities</li><li>Virtual elements for derived values</li></ul></div></div>
+      <div class="dont-box"><div class="dont-header">✗ Interface View — Avoid This</div><div class="dont-body"><ul><li><span class="ic">@UI.lineItem</span>, <span class="ic">@UI.fieldGroup</span></li><li><span class="ic">@UI.facet</span> definitions</li><li><span class="ic">@Consumption.valueHelpDefinition</span></li><li>Any annotation tied to one specific UI</li></ul></div></div>
+      <div class="do-box"><div class="do-header">✓ Consumption View</div><div class="do-body"><ul><li>All <span class="ic">@UI.*</span> annotations</li><li><span class="ic">@Consumption.valueHelpDefinition</span></li><li><span class="ic">@UI.facet</span> definitions</li><li>Field visibility (<span class="ic">@UI.hidden</span>)</li><li><span class="ic">@EndUserText.label</span> overrides</li></ul></div></div>
+      <div class="dont-box"><div class="dont-header">✗ Consumption View — Avoid This</div><div class="dont-body"><ul><li>Business logic or computed derivations</li><li><span class="ic">@Semantics.*</span> annotations</li><li>Authorisation-related annotations</li></ul></div></div>
+    </div>
+    <div class="callout c-avoid">
+      <div class="callout-title">⚠ Avoid This — UI Annotations in the Interface View</div>
+      <p>Placing <span class="ic">@UI.*</span> annotations in the interface view ties the business object to one application's layout. The problem appears later when a second application projects from the same interface view and inherits UI behaviour it was not designed for. Understanding why UI annotations belong in the consumption view and semantic annotations belong in the interface view — and why mixing them causes problems that show up much later — is what changes RAP from a set of rules into a model with a clear reason behind every constraint. The fix when this goes wrong always costs more than the discipline would have.</p>
+    </div>
+  </section>
+
+  </div><!-- /content p1 -->
+</div><!-- /tab-panel p1 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PART 2
+══════════════════════════════════════════════ -->
+<div class="tab-panel" id="p2">
+
+  <div class="toc-wrap">
+    <div class="toc-inner">
+      <div class="toc-label">Contents — Part 2</div>
+      <div class="toc-grid">
+        <a href="#p2s1"><span class="toc-n">01</span>Behaviour Definition — Structure &amp; Design</a>
+        <a href="#p2s2"><span class="toc-n">02</span>Interface BDEF — Full Walkthrough</a>
+        <a href="#p2s3"><span class="toc-n">03</span>Consumption BDEF — Delegation</a>
+        <a href="#p2s4"><span class="toc-n">04</span>Behaviour Implementation Class</a>
+        <a href="#p2s5"><span class="toc-n">05</span>EML — Entity Manipulation Language</a>
+        <a href="#p2s6"><span class="toc-n">06</span>Validations vs Determinations</a>
+        <a href="#p2s7"><span class="toc-n">07</span>Actions in RAP</a>
+        <a href="#p2s8"><span class="toc-n">08</span>Draft Handling</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <section class="section" id="p2s1">
+    <div class="sec-eyebrow">Section 01</div>
+    <h2 class="sec-title">Behaviour Definition — Structure &amp; Design</h2>
+    <p>The Behaviour Definition (BDEF) is the transactional contract of a RAP business object. It does not contain ABAP code — it is a declarative specification of what the object can do, how it is locked, how concurrency is controlled, and what logic runs at each point in the transaction lifecycle.</p>
+    <p>There are two BDEFs for every RAP business object. The <strong>interface BDEF</strong> carries the full definition. The <strong>consumption BDEF</strong> is a short projection that delegates to it and controls which capabilities the service layer can use. This mirrors the interface/consumption split in the CDS layer.</p>
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — Managed vs Unmanaged Declaration</div>
+      <p>The first line of the interface BDEF determines the scenario type. <span class="ic">managed implementation in class zbp_i_tst_plant_md unique</span> means the framework owns persistence. <span class="ic">unmanaged implementation in class zbp_i_tst_plant_md unique</span> means you own persistence — the framework will call your implementation for the save sequence and you write the database operations yourself.</p>
+      <p>Managed is the right choice for new development. Unmanaged is reserved for wrapping legacy persistence logic that cannot be replaced within the project scope. This decision is made once at the start of the project — changing from unmanaged to managed later requires a full reimplementation of the save logic.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s2">
+    <div class="sec-eyebrow">Section 02</div>
+    <h2 class="sec-title">Interface BDEF — Full Walkthrough</h2>
+    <p>The interface BDEF for the Plant Master application covers the full range of declarations. Each keyword is a design decision, not just syntax.</p>
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZI_TST_PLANT_MD — Interface Behaviour Definition</span><span class="cb-badge">BDEF · Managed</span></div>
+<pre><span class="kw">managed implementation in class</span> zbp_i_tst_plant_md <span class="kw">unique</span>;
+<span class="kw">strict</span> ( 2 );
+
+<span class="kw">define behavior for</span> ZI_TST_PLANT_MD <span class="kw">alias</span> Plant
+  <span class="kw">persistent table</span> ztst_plant_md
+  <span class="kw">lock master</span>
+  <span class="kw">authorization master</span> ( instance )
+  <span class="kw">etag master</span> ChangedAt
+{
+  <span class="kw">create</span> ( authorization : global );
+  <span class="kw">update</span>;
+  <span class="kw">delete</span>;
+
+  <span class="kw">field</span> ( readonly ) CreatedBy, CreatedAt;
+  <span class="kw">field</span> ( readonly : update ) Plant;
+
+  <span class="kw">validation</span> ValidatePlantKey       <span class="kw">on save</span> { create; }
+  <span class="kw">validation</span> ValidateRequiredFields <span class="kw">on save</span> { create; update; }
+
+  <span class="kw">determination</span> SetDefaultValues    <span class="kw">on modify</span> { create; }
+
+  <span class="kw">mapping for</span> ztst_plant_md {
+    Plant         = plant;
+    PlantName     = plant_name;
+    Country       = country;
+    Region        = region;
+    PlantType     = plant_type;
+    Currency      = currency;
+    ValidFrom     = valid_from;
+    ValidTo       = valid_to;
+    CreatedBy     = created_by;
+    CreatedAt     = created_at;
+    ChangedBy     = changed_by;
+    ChangedAt     = changed_at;
+  }
+}</pre></div>
+
+    <h3>Keyword by Keyword</h3>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ strict ( 2 )</div>
+      <p>This enables strict mode level 2 — the recommended setting for new RAP development. It enforces stricter syntax rules and prevents deprecated patterns. Always include this in new BDEFs. Older RAP implementations may use <span class="ic">strict ( 1 )</span> or no strict mode at all — this is one of the first things to check when reviewing existing RAP code.</p>
+    </div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — persistent table</div>
+      <p>In the managed scenario, this is the only place you name the physical database table. The framework uses this together with the <span class="ic">mapping</span> block to translate between CDS element names (CamelCase) and table field names (underscore). If a field is missing from the mapping block, the framework cannot persist it — the field disappears silently on save. Every field that needs to be saved must appear in the mapping.</p>
+    </div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — lock master</div>
+      <p>Declares that this entity manages its own lock. When a user opens a record for editing, the framework places a lock on that record. This prevents two users from editing the same record at the same time. In a parent-child model — for example, a header with line items — the parent declares <span class="ic">lock master</span> and the child declares <span class="ic">lock dependent by _Parent</span>. For a flat entity like Plant, <span class="ic">lock master</span> is always the right declaration.</p>
+    </div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — etag master ChangedAt</div>
+      <p>The ETag is a version marker on each record. When a user reads a record, they receive the current ETag value. When they try to save, the framework compares the ETag they send against the current value in the database. If another user saved in between, the ETags differ and the update is rejected — protecting against silent overwrite. <span class="ic">ChangedAt</span> typed as <span class="ic">abap.utclong</span> is the correct ETag field. It changes on every save and is precise enough to distinguish concurrent updates.</p>
+    </div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — authorization master ( instance ) and create ( authorization : global )</div>
+      <p><span class="ic">authorization master ( instance )</span> means authorisation is checked at the record level inside the implementation class. You implement a <span class="ic">get_instance_authorizations</span> method that checks whether the current user is allowed to update or delete each specific record — useful when different users own different records. The alternative is <span class="ic">authorization master ( global )</span>, which applies a blanket check regardless of which record is being accessed.</p>
+      <p><span class="ic">create ( authorization : global )</span> on the create operation means the authorisation check for creating a new record is a global check — not per-record, since no record exists yet to check against. This is the correct and only logical setting for create. You cannot check instance-level authorisation on a record that does not exist yet.</p>
+    </div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — field ( readonly ) and field ( readonly : update )</div>
+      <p><span class="ic">field ( readonly ) CreatedBy, CreatedAt</span> means these fields can never be set by the user — the framework fills them automatically via the <span class="ic">@Semantics.*</span> annotations on the interface view. <span class="ic">field ( readonly : update ) Plant</span> means the Plant key field can be set on create but cannot be changed after the record exists. This is the standard pattern for business key fields — set once, never changed.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s3">
+    <div class="sec-eyebrow">Section 03</div>
+    <h2 class="sec-title">Consumption BDEF — Delegation</h2>
+    <p>The consumption BDEF is intentionally minimal. It delegates all behaviour to the interface BDEF and controls which capabilities are visible to the service layer.</p>
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZC_TST_PLANT_MD — Consumption BDEF</span><span class="cb-badge">BDEF · Projection</span></div>
+<pre><span class="kw">projection</span>;
+<span class="kw">strict</span> ( 2 );
+
+<span class="kw">define behavior for</span> ZC_TST_PLANT_MD <span class="kw">alias</span> Plant
+{
+  <span class="kw">use create</span>;
+  <span class="kw">use update</span>;
+  <span class="kw">use delete</span>;
+}</pre></div>
+    <p>The <span class="ic">use</span> keyword exposes capabilities from the interface BDEF to the OData service. If you want to prevent deletion through the Fiori UI while keeping the operation available at the interface level — for example, for background processing — simply remove <span class="ic">use delete</span> from the consumption BDEF. The interface BDEF does not change. The deletion capability still exists but is not reachable through the service.</p>
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Validations and Determinations in the Consumption BDEF</div>
+      <p>Validations and determinations declared in the interface BDEF are automatically active — you do not need to use them in the consumption BDEF. They run as part of the save sequence regardless. The consumption BDEF only needs to explicitly use standard operations (create, update, delete) and actions. This is a common point of confusion for developers new to RAP.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s4">
+    <div class="sec-eyebrow">Section 04</div>
+    <h2 class="sec-title">Behaviour Implementation Class</h2>
+    <p>The behaviour implementation class is where ABAP code lives. It is generated by the framework using <strong>Ctrl+1 Quick Fix</strong> on the BDEF in ADT. The generation creates the global class and the local class stubs for all declared validations, determinations, and actions.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZBP_I_TST_PLANT_MD — Class Structure</span><span class="cb-badge">ABAP Class</span></div>
+<pre><span class="cmt">// Global class — generated by framework, do not edit directly</span>
+ZBP_I_TST_PLANT_MD
+│
+├── <span class="cmt">Local Types tab  ← this is where you write your code</span>
+│   ├── lhc_Plant          <span class="cmt">( local handler class — methods go here )</span>
+│   └── lsc_ZI_TST_PLANT_MD <span class="cmt">( local saver class — only for unmanaged save )</span>
+│
+└── <span class="cmt">Global Class tab  ← auto-generated, do not touch</span></pre></div>
+
+    <p>All your implementation logic goes in the <strong>Local Types tab</strong> inside <span class="ic">lhc_Plant</span>. The global class definition is managed by the framework — editing it directly risks having your changes overwritten when ADT regenerates the class after adding a new validation or action.</p>
+
+    <h3>Validation Method — Example</h3>
+    <div class="code-block"><div class="cb-header"><span class="cb-title">lhc_Plant — ValidatePlantKey</span><span class="cb-badge">Validation Method</span></div>
+<pre><span class="kw">METHOD</span> validateplantkey.
+
+  <span class="cmt">  " Read from buffer — not from database</span>
+  <span class="kw">READ ENTITIES OF</span> zi_tst_plant_md <span class="kw">IN LOCAL MODE</span>
+    <span class="kw">ENTITY</span> Plant
+      <span class="kw">FIELDS</span> ( Plant )
+      <span class="kw">WITH CORRESPONDING</span> #( keys )
+    <span class="kw">RESULT DATA</span>(plants).
+
+  <span class="kw">LOOP AT</span> plants <span class="kw">INTO DATA</span>(plant_data).
+
+    <span class="kw">IF</span> plant_data-Plant <span class="kw">IS INITIAL</span>.
+      APPEND VALUE #(
+        %tky = plant_data-%tky
+        %msg = new_message_with_text(
+          severity = if_abap_behv_message=>severity-error
+          text     = <span class="str">'Plant key cannot be empty'</span> )
+      ) <span class="kw">TO</span> reported-Plant.
+      APPEND VALUE #( %tky = plant_data-%tky ) <span class="kw">TO</span> failed-Plant.
+    <span class="kw">ENDIF</span>.
+
+  <span class="kw">ENDLOOP</span>.
+
+<span class="kw">ENDMETHOD</span>.</pre></div>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — %tky, failed, and reported</div>
+      <p><span class="ic">%tky</span> is the transactional key — it identifies a record within the RAP buffer. <span class="ic">failed</span> is the table you append to when a record fails validation — the framework uses this to block the save for that record. <span class="ic">reported</span> is where you add messages that are shown to the user in the Fiori UI. Both are implicitly available in every validation method — you do not declare them. These three structures are the standard output of every RAP validation.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s5">
+    <div class="sec-eyebrow">Section 05</div>
+    <h2 class="sec-title">EML — Entity Manipulation Language</h2>
+    <p>EML is the ABAP-native language for reading and modifying RAP business objects. It is used in two contexts: inside implementation methods (to read or modify the entity being processed), and from external ABAP programs that consume a RAP business object.</p>
+    <p>EML is an in-process language. It cannot be called remotely like an RFC-enabled function module. For remote consumption of a RAP business object, the OData service is the correct channel.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">EML — Common Patterns</span><span class="cb-badge">Entity Manipulation Language</span></div>
+<pre><span class="cmt">// Reading from the buffer inside an implementation method</span>
+<span class="kw">READ ENTITIES OF</span> zi_tst_plant_md <span class="kw">IN LOCAL MODE</span>
+  <span class="kw">ENTITY</span> Plant
+    <span class="kw">ALL FIELDS WITH CORRESPONDING</span> #( keys )
+  <span class="kw">RESULT DATA</span>(plants).
+
+<span class="cmt">// Creating a record from an external ABAP program</span>
+<span class="kw">MODIFY ENTITIES OF</span> zi_tst_plant_md
+  <span class="kw">ENTITY</span> Plant
+    <span class="kw">CREATE FIELDS</span> ( Plant PlantName Country PlantType )
+    <span class="kw">WITH VALUE</span> #( ( Plant = <span class="str">'PL10'</span> PlantName = <span class="str">'New Plant'</span>
+                    Country = <span class="str">'DE'</span>  PlantType = <span class="str">'MF'</span> ) )
+  <span class="kw">REPORTED DATA</span>(reported)
+  <span class="kw">FAILED DATA</span>(failed)
+  <span class="kw">MAPPED DATA</span>(mapped).
+
+<span class="cmt">// Commit — required when calling from outside a RAP context</span>
+<span class="kw">COMMIT ENTITIES</span>
+  <span class="kw">RESPONSE OF</span> zi_tst_plant_md
+  <span class="kw">FAILED DATA</span>(commit_failed)
+  <span class="kw">REPORTED DATA</span>(commit_reported).</pre></div>
+
+    <div class="callout c-watch">
+      <div class="callout-title">⚠ Watch Out — COMMIT ENTITIES vs COMMIT WORK</div>
+      <p>When calling EML from an external ABAP program, use <span class="ic">COMMIT ENTITIES</span> — not <span class="ic">COMMIT WORK</span>. <span class="ic">COMMIT ENTITIES</span> triggers the full RAP save sequence including all validations declared in the BDEF. <span class="ic">COMMIT WORK</span> bypasses the RAP save sequence and writes directly to the database, skipping validations entirely. This is one of the most impactful mistakes in RAP integration scenarios.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s6">
+    <div class="sec-eyebrow">Section 06</div>
+    <h2 class="sec-title">Validations vs Determinations</h2>
+    <p>Both are declared in the interface BDEF and implemented in the local handler class. They look similar in structure but serve completely different purposes and run at different points in the transaction lifecycle.</p>
+
+    <table class="comp-table">
+      <thead><tr><th>Aspect</th><th>Validation</th><th>Determination</th></tr></thead>
+      <tbody>
+        <tr><td>Purpose</td><td>Check data — report errors and block save if data is invalid</td><td>Derive data — calculate and set field values based on other fields</td></tr>
+        <tr><td>Trigger</td><td><span class="ic">on save</span> — runs during the save sequence, after all modifications are in the buffer</td><td><span class="ic">on modify</span> — runs during the interaction phase, after the framework processes all modifications in a round trip</td></tr>
+        <tr><td>Output</td><td>Appends to <span class="ic">failed</span> and <span class="ic">reported</span> — blocks save if failed is populated</td><td>Modifies fields in the buffer via <span class="ic">MODIFY ENTITIES</span></td></tr>
+        <tr><td>Can block save?</td><td class="yes">Yes</td><td class="no">No — it sets values, never blocks</td></tr>
+        <tr><td>Typical use</td><td>Duplicate key check, mandatory field check, date range validation</td><td>Default value population, derived field calculation, status derivation</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">BDEF — Validation and Determination Declaration</span><span class="cb-badge">Interface BDEF</span></div>
+<pre><span class="cmt">// Validation — runs on save, can block the operation</span>
+<span class="kw">validation</span> ValidatePlantKey       <span class="kw">on save</span> { create; }
+<span class="kw">validation</span> ValidateRequiredFields <span class="kw">on save</span> { create; update; }
+
+<span class="cmt">// Determination — runs on modify, sets field values</span>
+<span class="kw">determination</span> SetDefaultValues    <span class="kw">on modify</span> { create; }</pre></div>
+
+    <div class="callout c-watch">
+      <div class="callout-title">⚠ Watch Out — Determination Triggering Loops</div>
+      <p>A determination that modifies a field will trigger another <span class="ic">on modify</span> event. If another determination is declared for that field, it will run again — potentially creating a loop. The framework has loop detection, but the safest approach is to be explicit about which fields trigger each determination and to avoid having determinations that trigger each other. Always check <span class="ic">keys</span> before reading to confirm the determination is actually needed for this specific change.</p>
+    </div>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Save Sequence Order</div>
+      <p>Understanding the order in which things run during a save helps you place logic correctly. The correct sequence is: user modifications collected in buffer → determinations triggered <span class="ic">on modify</span> run during the interaction phase → on explicit save, validations run against the buffer → if all validations pass, the saver flushes the buffer to the database. If a validation fails, the save is blocked and the user sees the error messages. Determinations do not run again during the save sequence — they run only during the interaction phase when fields are modified.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s7">
+    <div class="sec-eyebrow">Section 07</div>
+    <h2 class="sec-title">Actions in RAP</h2>
+    <p>Actions are non-standard operations — operations beyond create, update, and delete. They are the RAP equivalent of custom function modules or BAPI methods that perform a specific business operation on a record. Examples: approve a request, copy a record, activate a plant, trigger an output.</p>
+
+    <table class="comp-table">
+      <thead><tr><th>Type</th><th>What It Does</th><th>When to Use</th></tr></thead>
+      <tbody>
+        <tr><td>Instance Action</td><td>Operates on one specific record — identified by the key</td><td>Approve this plant record, copy this contract, deactivate this entry</td></tr>
+        <tr><td>Static Action</td><td>Operates without a specific record — no key required</td><td>Mass operations, initialisation tasks, operations that create new records</td></tr>
+        <tr><td>Factory Action</td><td>Creates a new record — a specialised static or instance action</td><td>Copy-from pattern: create a new plant based on an existing one</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">BDEF — Action Declaration and Fiori Annotation</span><span class="cb-badge">Interface BDEF + Consumption View</span></div>
+<pre><span class="cmt">// In the interface BDEF</span>
+<span class="kw">action</span> ( features : instance ) ActivatePlant
+  <span class="kw">result</span> [1] $self;
+<span class="cmt">// result [1] $self — the action returns exactly one instance of the
+// same entity after execution. $self refers to the current entity type.
+// The Fiori UI uses the returned instance to refresh the object page.</span>
+
+<span class="cmt">// In the consumption BDEF — expose the action</span>
+<span class="kw">use action</span> ActivatePlant;
+
+<span class="cmt">// In the consumption view — make it a button in Fiori UI</span>
+<span class="ann">@UI.identification</span>: [{ type: <span class="str">#FOR_ACTION</span>,
+                         dataAction: <span class="str">'ActivatePlant'</span>,
+                         label: <span class="str">'Activate Plant'</span> }]
+Plant,</pre></div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — features : instance</div>
+      <p><span class="ic">features : instance</span> means the action's availability is controlled per record by the implementation class. You implement a <span class="ic">get_instance_features</span> method that checks the current state of each record and returns whether the action is enabled, disabled, or hidden. This is how you show the "Activate Plant" button only for plants that are currently inactive — the button state reflects the record state automatically without any custom UI code.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p2s8">
+    <div class="sec-eyebrow">Section 08</div>
+    <h2 class="sec-title">Draft Handling</h2>
+    <p>Draft is the mechanism that allows a user to start filling a form, save their progress without committing to the active database, and return later to complete it. It is declared in the BDEF with a single addition and the framework generates the draft table and handles all draft-to-active transitions automatically.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">BDEF — Draft Declaration</span><span class="cb-badge">Interface BDEF · with draft</span></div>
+<pre><span class="kw">managed implementation in class</span> zbp_i_tst_plant_md <span class="kw">unique</span>;
+<span class="kw">strict</span> ( 2 );
+<span class="kw">with draft</span>;   <span class="cmt">// This single addition enables the full draft framework</span>
+
+<span class="kw">define behavior for</span> ZI_TST_PLANT_MD <span class="kw">alias</span> Plant
+  <span class="kw">persistent table</span>    ztst_plant_md
+  <span class="kw">draft table</span>         ztst_plant_md_d   <span class="cmt">// Framework generates this table</span>
+  <span class="kw">lock master</span>
+  <span class="kw">total etag</span>          LocalLastChangedAt
+  <span class="kw">etag master</span>         ChangedAt
+  <span class="kw">authorization master</span> ( instance )
+{
+  <span class="kw">create</span>;
+  <span class="kw">update</span>;
+  <span class="kw">delete</span>;
+  <span class="kw">draft action</span> Edit;
+  <span class="kw">draft action</span> Activate;
+  <span class="kw">draft action</span> Discard;
+  <span class="kw">draft action</span> Resume;
+  <span class="kw">draft determine action</span> Prepare;
+}</pre></div>
+
+    <table class="comp-table">
+      <thead><tr><th>Draft Action</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td>Edit</td><td>Creates a draft copy of an active record — user edits the draft, not the active record</td></tr>
+        <tr><td>Activate</td><td>Runs all validations and saves the draft to the active table — the formal "Save" operation</td></tr>
+        <tr><td>Discard</td><td>Deletes the draft without saving — user abandons their changes</td></tr>
+        <tr><td>Resume</td><td>Navigates a user back to their existing draft when they return to a record that has an unsaved draft. Triggered by the framework on navigation — not a button the user clicks directly</td></tr>
+        <tr><td>Prepare</td><td>Runs validations without saving — allows the UI to show errors before the user clicks Activate</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — total etag and LocalLastChangedAt</div>
+      <p>When draft is enabled, a second ETag field <span class="ic">total etag LocalLastChangedAt</span> is required in addition to <span class="ic">etag master ChangedAt</span>. The <span class="ic">etag master</span> tracks changes to the active record. The <span class="ic">total etag</span> tracks the overall state including drafts — it changes when either the active record or a draft is modified. Both fields must be present as <span class="ic">abap.utclong</span> in the database table. <span class="ic">LocalLastChangedAt</span> is the SAP-recommended field name for the total ETag field — add it to your table definition alongside <span class="ic">changed_at</span>.</p>
+    </div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — When to Use Draft</div>
+      <p>Draft adds a draft table, additional OData operations, and a more complex UI flow. For simple master data forms where users typically fill and save in one session, draft is not always needed. Use draft when: the form has many fields and session timeouts are a real risk, when the creation process spans multiple steps or requires approvals before activation, or when multiple users may work on the same record at different times. For the Plant Master example in this series, draft is demonstrated as a declaration pattern — the business case for it depends on your specific workflow.</p>
+    </div>
+  </section>
+
+  </div><!-- /content p2 -->
+</div><!-- /tab-panel p2 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PART 3
+══════════════════════════════════════════════ -->
+<div class="tab-panel" id="p3">
+
+  <div class="toc-wrap">
+    <div class="toc-inner">
+      <div class="toc-label">Contents — Part 3</div>
+      <div class="toc-grid">
+        <a href="#p3s1"><span class="toc-n">01</span>Value Help — Three Design Patterns</a>
+        <a href="#p3s2"><span class="toc-n">02</span>Dependent Value Help with additionalBinding</a>
+        <a href="#p3s3"><span class="toc-n">03</span>Service Definition &amp; Service Binding</a>
+        <a href="#p3s4"><span class="toc-n">04</span>SAP Naming Conventions</a>
+        <a href="#p3s5"><span class="toc-n">05</span>Common Pitfalls in RAP Projects</a>
+        <a href="#p3s6"><span class="toc-n">06</span>Unmanaged RAP — Coming Next</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <section class="section" id="p3s1">
+    <div class="sec-eyebrow">Section 01</div>
+    <h2 class="sec-title">Value Help — Three Design Patterns</h2>
+    <p>Value help in RAP is defined in the consumption view using <span class="ic">@Consumption.valueHelpDefinition</span>. There are three distinct patterns depending on the source of the values. Choosing the right pattern matters — using the wrong one either adds unnecessary complexity or produces a value help with no data.</p>
+
+    <h3>Pattern 1 — Domain-Based Value Help</h3>
+    <p>When a field is typed with a custom data element that has a domain with fixed values, the value help is built as a CDS view that reads domain values from the database. This is the right pattern when your value set is small, stable, and maintained in the DDIC — for example, plant types: MF (Manufacturing), WH (Warehouse), OF (Office).</p>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Build a Common Domain Value Help</div>
+      <p>A clean reusable approach is to create one common domain value help view — <span class="ic">ZI_DOMAIN</span> — that reads domain values from the standard SAP domain values table. The view accepts the domain name as a parameter and is filterable by domain name. This single view can then be reused across all domain-based fields in any application — you only build the pattern once and reference it with a different domain name each time.</p>
+    </div>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZI_TST_PLANT_TYPE_VH — Domain-Based Value Help View</span><span class="cb-badge">Value Help CDS</span></div>
+<pre><span class="ann">@EndUserText.label</span>: <span class="str">'Plant Type Value Help'</span>
+<span class="ann">@ObjectModel.dataCategory</span>: <span class="str">#VALUE_HELP</span>
+
+<span class="kw">define view entity</span> ZI_TST_PLANT_TYPE_VH
+  <span class="kw">as select from</span> ZI_DOMAIN( DomainName: <span class="str">'ZTST_PLANT_TYPE'</span> )
+{
+  <span class="kw">key</span> DomainValue      <span class="kw">as</span> PlantType,
+      ShortDescription  <span class="kw">as</span> ShortDescription
+}</pre></div>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">Consumption View — Binding for Plant Type</span><span class="cb-badge">@Consumption.valueHelpDefinition</span></div>
+<pre><span class="ann">@Consumption.valueHelpDefinition</span>: [{
+  entity: {
+    name:    <span class="str">'ZI_TST_PLANT_TYPE_VH'</span>,
+    element: <span class="str">'PlantType'</span>
+  }
+}]
+PlantType,</pre></div>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — @ObjectModel.dataCategory : #VALUE_HELP</div>
+      <p>This annotation marks the CDS view as a value help provider. Without it, the view can be used as a value help technically, but the annotation makes the intent explicit and enables better tooling support in ADT. Always add it to dedicated value help CDS views.</p>
+    </div>
+
+    <h3>Pattern 2 — SAP Standard Value Help (I_* Views)</h3>
+    <p>For standard SAP domains — currency, language, country — SAP provides published interface views in the <span class="ic">I_*</span> namespace. You do not build your own VH view. You point directly to the SAP-delivered view. This is the correct and upgrade-safe approach for standard fields.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">Consumption View — Standard SAP Value Helps</span><span class="cb-badge">SAP Standard I_* Views</span></div>
+<pre><span class="cmt">// Currency — SAP standard value help</span>
+<span class="ann">@Consumption.valueHelpDefinition</span>: [{
+  entity: { name: <span class="str">'I_Currency'</span>, element: <span class="str">'Currency'</span> }
+}]
+Currency,
+
+<span class="cmt">// Language — SAP standard value help</span>
+<span class="ann">@Consumption.valueHelpDefinition</span>: [{
+  entity: { name: <span class="str">'I_Language'</span>, element: <span class="str">'Language'</span> }
+}]
+Language,
+
+<span class="cmt">// Country — SAP standard value help</span>
+<span class="ann">@Consumption.valueHelpDefinition</span>: [{
+  entity: { name: <span class="str">'I_Country'</span>, element: <span class="str">'Country'</span> }
+}]
+Country,</pre></div>
+
+    <div class="callout c-choice">
+      <div class="callout-title">✦ Design Choice — Always Use I_* Views for Standard Fields</div>
+      <p>Building a custom VH view for currency, language, or country is unnecessary work and introduces maintenance risk. SAP-delivered <span class="ic">I_*</span> views are kept up to date with every release. More importantly, these views are part of SAP's released C1 API surface — they are stable across S/4HANA upgrades. Custom replacements are not. Use the standard where it exists.</p>
+    </div>
+
+    <h3>Pattern 3 — CDS-Based Value Help from a Custom Entity</h3>
+    <p>When the value set comes from a custom database table — not a domain and not an SAP standard — you build a dedicated CDS view that selects from that table and expose it as a value help.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZI_TST_PLNT_VH — Custom Entity Value Help</span><span class="cb-badge">Value Help CDS</span></div>
+<pre><span class="ann">@ObjectModel.dataCategory</span>: <span class="str">#VALUE_HELP</span>
+
+<span class="kw">define view entity</span> ZI_TST_PLNT_VH
+  <span class="kw">as select from</span> ztst_plant_md
+{
+  <span class="kw">key</span> plant       <span class="kw">as</span> Plant,
+      plant_name  <span class="kw">as</span> PlantName
+}</pre></div>
+
+    <div class="callout c-watch">
+      <div class="callout-title">⚠ Watch Out — Value Help View Must Be Exposed in Service Definition</div>
+      <p>The value help popup makes a separate OData call to load its list of values. For this call to work, the VH CDS view must be explicitly listed in the service definition. If you define <span class="ic">@Consumption.valueHelpDefinition</span> in the consumption view but forget to expose the VH view in the service definition, the popup opens but shows no data. This is one of the most common oversights in RAP development — always verify the service definition when a value help appears empty.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p3s2">
+    <div class="sec-eyebrow">Section 02</div>
+    <h2 class="sec-title">Dependent Value Help with additionalBinding</h2>
+    <p>The most useful value help pattern is a dependent value help — where the list shown in a popup is filtered based on another field already filled in the form. The Region field in the Plant Master application is a good example: when the user has already selected Country, the Region popup should show only regions for that country.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">Consumption View — Region with additionalBinding</span><span class="cb-badge">Dependent Value Help</span></div>
+<pre><span class="ann">@Consumption.valueHelpDefinition</span>: [{
+  entity: {
+    name:    <span class="str">'I_Region'</span>,
+    element: <span class="str">'Region'</span>
+  },
+  additionalBinding: [{
+    localElement: <span class="str">'Country'</span>,   <span class="cmt">// field in THIS consumption view</span>
+    element:      <span class="str">'Country'</span>,   <span class="cmt">// matching field in the VH entity</span>
+    usage:        <span class="str">#FILTER_AND_RESULT</span>
+  }]
+}]
+Region,</pre></div>
+
+    <table class="comp-table">
+      <thead><tr><th>usage value</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>#FILTER_AND_RESULT</td><td>Pre-filters the popup using the local field value AND writes the selected value back to the local field. Use for parent-child lookups like Country → Region.</td></tr>
+        <tr><td>#FILTER</td><td>Pre-filters the popup only — does not write back. Use when you want to narrow the list but the user's selection does not need to update another field.</td></tr>
+        <tr><td>#RESULT</td><td>Writes back the selected value to a local field — no pre-filtering. Use when you want to auto-fill a field based on what the user selects from the popup.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-good">
+      <div class="callout-title">✓ Good Practice — additionalBinding for Parent-Child Fields</div>
+      <p>Apply this pattern wherever you have parent-child field relationships in your form: Country → Region, Company Code → Business Area, Plant → Storage Location. Without it, the popup shows all values globally and the user must know the exact code. With it, the form guides the user naturally. This is a small annotation that has a significant impact on usability — and it costs nothing to implement.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p3s3">
+    <div class="sec-eyebrow">Section 03</div>
+    <h2 class="sec-title">Service Definition &amp; Service Binding</h2>
+    <p>The service definition and service binding are the final two artefacts that make a RAP business object accessible as an OData service. Without them, the CDS views and BDEFs exist in the system but nothing can call them.</p>
+
+    <div class="code-block"><div class="cb-header"><span class="cb-title">ZSD_TST_PLANT_MAINT — Service Definition</span><span class="cb-badge">Service Definition</span></div>
+<pre><span class="ann">@EndUserText.label</span>: <span class="str">'Plant Master Maintenance Service'</span>
+
+<span class="kw">define service</span> ZSD_TST_PLANT_MAINT {
+  expose ZC_TST_PLANT_MD         <span class="kw">as</span> Plant;
+  expose ZI_TST_PLANT_TYPE_VH    <span class="kw">as</span> PlantTypeValueHelp;
+  <span class="cmt">// All value help views used in the consumption view must be listed here</span>
+}</pre></div>
+
+    <p>Two service bindings are created for the same service definition — one for each OData version needed.</p>
+
+    <table class="comp-table">
+      <thead><tr><th>Binding</th><th>Type</th><th>When to Use</th></tr></thead>
+      <tbody>
+        <tr><td>ZSB_TST_PLANT_UI_V2</td><td>OData V2 — UI</td><td>ADT Preview for Fiori Elements app — the quick test preview in Eclipse. V2 is required for this specific tool.</td></tr>
+        <tr><td>ZSB_TST_PLANT_UI_V4</td><td>OData V4 — UI</td><td>Production Fiori Elements applications. OData V4 is the strategic version — it supports draft handling, richer query capabilities, and deep entity operations.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — Republish After Editing a CDS View</div>
+      <p>When you edit the structure of a CDS view — adding a field, changing an association, or adding annotations that affect the metadata — the service binding does not update automatically. You must republish the service binding in ADT for the changes to reflect in the OData metadata. This is a step that is easy to forget during development — if your Fiori app is not showing a new field you added to the CDS view, check whether the service binding has been republished.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p3s4">
+    <div class="sec-eyebrow">Section 04</div>
+    <h2 class="sec-title">SAP Naming Conventions</h2>
+    <p>Naming conventions in RAP are not arbitrary — they communicate the role of each artefact to anyone reading the project. Consistent naming makes the architecture self-documenting. The table below shows the SAP standard convention alongside the names used in this series, which were created in a trial system where conventions were not enforced.</p>
+
+    <table class="comp-table">
+      <thead>
+        <tr><th>Artefact</th><th>Used in This Series</th><th>SAP Standard Convention</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Database Table</td><td><span class="ic">ZTST_PLANT_MD</span></td><td><span class="ic">Z[NS]_[OBJECT]</span> — no prefix restriction for tables</td><td class="ok">✓ OK</td></tr>
+        <tr><td>Data Element / Domain</td><td><span class="ic">ZTST_PLANT_TYPE</span></td><td>Customer namespace, descriptive name</td><td class="ok">✓ OK</td></tr>
+        <tr><td>Interface CDS View</td><td><span class="ic">ZI_TST_PLANT_MD</span></td><td><span class="ic">ZI_[OBJECT]</span> — no namespace segment between prefix and object name</td><td class="fix">⚠ ZI_PLANT_MD</td></tr>
+        <tr><td>Consumption CDS View</td><td><span class="ic">ZC_TST_PLANT_MD</span></td><td><span class="ic">ZC_[OBJECT]</span></td><td class="fix">⚠ ZC_PLANT_MD</td></tr>
+        <tr><td>VH CDS — Plant Type</td><td><span class="ic">ZI_TST_PLANT_TYPE_VH</span></td><td><span class="ic">ZI_[OBJECT]_VH</span> — VH suffix is correct</td><td class="fix">⚠ ZI_PLANT_TYPE_VH</td></tr>
+        <tr><td>VH CDS — Plant</td><td><span class="ic">ZI_TST_PLNT_VH</span></td><td><span class="ic">ZI_[OBJECT]_VH</span></td><td class="fix">⚠ ZI_PLANT_VH</td></tr>
+        <tr><td>Interface BDEF</td><td><span class="ic">ZI_TST_PLANT_MD</span></td><td>Same name as interface CDS view</td><td class="fix">⚠ ZI_PLANT_MD</td></tr>
+        <tr><td>Consumption BDEF</td><td><span class="ic">ZC_TST_PLANT_MD</span></td><td>Same name as consumption CDS view</td><td class="fix">⚠ ZC_PLANT_MD</td></tr>
+        <tr><td>Behaviour Impl. Class</td><td><span class="ic">ZBP_I_TST_PLANT_MD</span></td><td><span class="ic">ZBP_I_[OBJECT]</span> — BP prefix, I for interface BDEF</td><td class="fix">⚠ ZBP_I_PLANT_MD</td></tr>
+        <tr><td>Service Definition</td><td><span class="ic">ZSD_TST_PLANT_MAINT</span></td><td><span class="ic">ZUI_[OBJECT]_SRV</span> — UI prefix for Fiori services</td><td class="fix">⚠ ZUI_PLANT_MAINT_SRV</td></tr>
+        <tr><td>Service Binding (V2)</td><td><span class="ic">ZSB_TST_PLANT_UI_V2</span></td><td><span class="ic">ZUI_[OBJECT]_O2</span> — O2 suffix for OData V2</td><td class="fix">⚠ ZUI_PLANT_MAINT_O2</td></tr>
+        <tr><td>Service Binding (V4)</td><td><span class="ic">ZSB_TST_PLANT_UI_V4</span></td><td><span class="ic">ZUI_[OBJECT]_O4</span> — O4 suffix for OData V4</td><td class="fix">⚠ ZUI_PLANT_MAINT_O4</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout c-note">
+      <div class="callout-title">→ Note — The TST Namespace Segment</div>
+      <p>The <span class="ic">TST</span> segment in the trial system names is a training package identifier — common in SAP learning environments. In a real project, the SAP convention is that the ZI_ and ZC_ prefixes already communicate the artefact type. Adding a namespace segment between the prefix and the object name — like <span class="ic">ZI_MM_PLANT_MD</span> — is common in large programmes to indicate the module area (MM, SD, FI), but the SAP standard does not require it. What matters most is that the convention is agreed and applied consistently across the entire project from day one.</p>
+    </div>
+  </section>
+
+  <section class="section" id="p3s5">
+    <div class="sec-eyebrow">Section 05</div>
+    <h2 class="sec-title">Common Pitfalls in RAP Projects</h2>
+    <p>These are the design and implementation mistakes that appear most often in RAP code reviews. Each one either breaks something immediately or creates a problem that surfaces later when it is more expensive to fix.</p>
+
+    <table class="comp-table">
+      <thead><tr><th>Pitfall</th><th>What Goes Wrong</th><th>How to Avoid</th></tr></thead>
+      <tbody>
+        <tr><td>UI annotations in the interface view</td><td>Second application projecting from the same interface view inherits unintended UI behaviour</td><td>All @UI.* annotations belong in the consumption view or a Metadata Extension on the consumption view</td></tr>
+        <tr><td>Missing field in BDEF mapping block</td><td>Field disappears silently on save — no error, data is simply not written</td><td>Every field that needs to be saved must appear in the mapping block. Verify after every structural change to the table or CDS view</td></tr>
+        <tr><td>VH view not exposed in service definition</td><td>Value help popup opens but shows no data</td><td>Every CDS view referenced in @Consumption.valueHelpDefinition must be listed in the service definition</td></tr>
+        <tr><td>SELECT on current entity inside a validation</td><td>Validation returns old data — misses buffer changes — produces incorrect results under concurrent use</td><td>Use READ ENTITIES IN LOCAL MODE for the entity being modified. Direct SELECT is fine for unrelated tables</td></tr>
+        <tr><td>COMMIT WORK instead of COMMIT ENTITIES in EML</td><td>RAP save sequence and validations are bypassed — invalid data can be saved directly to the database</td><td>Always use COMMIT ENTITIES when calling EML from an external ABAP program</td></tr>
+        <tr><td>facet targetQualifier does not match fieldGroup qualifier</td><td>Field is not visible on the object page — no error, field simply does not appear</td><td>These are a case-sensitive key pair. A typo in either one breaks the connection silently</td></tr>
+        <tr><td>#NOT_REQUIRED for AccessControl in production</td><td>Any authenticated user can read all records regardless of authorisation profile</td><td>#NOT_REQUIRED is for development only. Production requires a DCL access control object with proper authorisation conditions</td></tr>
+        <tr><td>Service binding not republished after CDS change</td><td>New fields or annotations do not appear in the Fiori app or OData metadata</td><td>After any structural CDS change, republish the service binding in ADT</td></tr>
+        <tr><td>No etag master declared in BDEF</td><td>Two users can edit the same record simultaneously — second save silently overwrites the first</td><td>Always declare etag master with an abap.utclong field. Do not skip this even for simple applications</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section" id="p3s6">
+    <div class="sec-eyebrow">Section 06</div>
+    <h2 class="sec-title">Unmanaged RAP — Coming in the Next Series</h2>
+    <p>This series has focused entirely on the <strong>managed RAP scenario</strong> — where the framework handles database persistence and you declare behaviour rather than implement it from scratch. This is the right starting point and the right default for all new development.</p>
+    <p>There is a second scenario — <strong>unmanaged RAP</strong> — where you take full ownership of the save sequence. The framework still provides the OData service, the BDEF contract, and the structured save flow, but the actual database operations are written by you in the implementation class. This matters specifically when:</p>
+    <ul style="padding-left:1.4rem; margin:1rem 0; color:var(--ink-2); font-size:0.97rem; line-height:1.8;">
+      <li>You are wrapping a legacy BAPI that has decades of business logic and cannot be replaced</li>
+      <li>The persistence layer is a complex custom structure that the managed framework cannot map directly</li>
+      <li>You need to call multiple BAPIs in sequence as part of a single save operation</li>
+    </ul>
+
+    <div class="next-series">
+      <div class="ns-badge">Upcoming Series</div>
+      <h3>RAP Unmanaged Scenario — A Practical Guide</h3>
+      <p>The next series covers the unmanaged RAP scenario in depth — when to use it, how the save sequence changes, and how to wrap existing BAPIs cleanly without losing the RAP framework benefits.</p>
+      <div class="ns-topics">
+        <div class="ns-topic"><span class="ns-dot"></span>Unmanaged vs managed — what actually changes in the implementation</div>
+        <div class="ns-topic"><span class="ns-dot"></span>The local saver class (lsc_) — where your database operations go</div>
+        <div class="ns-topic"><span class="ns-dot"></span>Wrapping a BAPI — mapping RAP buffer contents to BAPI input parameters</div>
+        <div class="ns-topic"><span class="ns-dot"></span>Error handling from BAPI return tables back to the RAP reported structure</div>
+        <div class="ns-topic"><span class="ns-dot"></span>When unmanaged saves more time than managed — and when it does not</div>
+      </div>
+      <p style="color:rgba(255,255,255,0.38); font-size:0.82rem; font-style:italic; font-family:var(--serif);">Follow to be notified when the Unmanaged RAP series publishes.</p>
+    </div>
+  </section>
+
+  </div><!-- /content p3 -->
+</div><!-- /tab-panel p3 -->
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="doc-footer">
+  <strong>Sowmya Pabba</strong><br>
+  S/4HANA &nbsp;·&nbsp; HANA-Optimised ABAP &nbsp;·&nbsp; CDS &nbsp;·&nbsp; RAP &nbsp;·&nbsp; BTP &nbsp;·&nbsp; Clean Core
+  <div class="wm-footer">© Sowmya Pabba &nbsp;·&nbsp; RAP for ABAP Professionals — Complete Series</div>
+</footer>
+
+<script>
+function showTab(id, btn) {
+  // Hide all panels
+  document.querySelectorAll('.tab-panel').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  // Deactivate all buttons
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  // Show selected panel
+  document.getElementById(id).classList.add('active');
+  // Activate clicked button
+  btn.classList.add('active');
+  // Scroll to top of content
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
